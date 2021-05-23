@@ -6,9 +6,12 @@ import lookup
 
 from foodtable import FoodTable
 import krakenUtils as utils
+import acoEngine
 
 
 minimum_side = 32
+iu.setCaching(True)
+iu.setBuffering(True)
 
 parser = argparse.ArgumentParser(description="Build a Minecraft Settlement, by Claus Aranha (2021)")
 group = parser.add_mutually_exclusive_group(required=True)
@@ -58,23 +61,46 @@ if __name__ == "__main__":
 
     location = [];
     for _ in range(10):
-        _x, _z = randint(buildarea[0], buildarea[3]), randint(buildarea[2], buildarea[5])
+        _x, _z = randint(buildarea[0]+minimum_side//2, buildarea[3]-minimum_side//2), randint(buildarea[2]+minimum_side//2, buildarea[5]-minimum_side//2)
         _y = ws.heightmaps["MOTION_BLOCKING_NO_LEAVES"][_x - buildarea[0],_z - buildarea[2]]+1
+        _water = 0
         while ws.getBlockAt(_x, _y, _z) in lookup.TRANSPARENT:
+            if (ws.getBlockAt(_x, _y, _z) == "minecraft:water"):
+                _water = 100
             _y -= 1
 
         _block = ws.getBlockAt(_x, _y, _z)
         _food = ft.getFood(_x, _y, _z)
 
-        _score = _food + _y/20 + utils.mdist2d(_x, _z, *center)
+        _score = _food + _y/20 + utils.mdist2d(_x, _z, *center) - _water
         location.append((-1*_score, (_x, _y, _z)))
     location.sort()
 
     location = location[0][1]
 
+    # DEBUG
+    for _y in range(location[1]+6, location[1]+16):
+        iu.setBlock(location[0],_y,location[2],"minecraft:glowstone")
+    iu.sendBlocks()
+
+    aco = acoEngine.ACO(ws, ft, location)
+
+    steps = set()
+    for b in range(150):
+        steps = steps.union(aco.runIteration())
+        # for s in steps:
+        #     iu.setBlock(*s,"minecraft:netherrack")
+        if (b%10 == 0):
+            print(b)
+        #     iu.sendBlocks()
+
+    for s in steps:
+        iu.setBlock(*s, "minecraft:netherrack")
+    iu.sendBlocks()
     print("The Kraken has landed at {}.".format(location))
 
 
 
+    iu.sendBlocks()
     endtime = time.time()
     print("Total time was {:.2} seconds".format(endtime - starttime))

@@ -49,3 +49,4 @@ class FoodTable:
     def changeFood(self, gx, gy, gz, df):
         x, y, z = self.g2l(gx, gy, gz)
         self.table[x, y, z] = max(self.getFood(gx, gy, gz) + df, 0)
+        return self.table[x, y, z]

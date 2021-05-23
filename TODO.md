@@ -30,4 +30,7 @@
 ## Better fungus
 
 # TODO Notes
+- Reduce probability of taking a step underground?
+  (Try to keep at least one face near air?)
 - Extend food table with missing blocks
+- Should I add the pheromon of all ants, or only the maximum?
