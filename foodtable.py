@@ -8,9 +8,10 @@ import lookup
 LOGS = ('minecraft:oak_log', 'minecraft:birch_log', 'minecraft:spruce_log',
         'minecraft:jungle_log', 'minecraft:acacia_log', 'minecraft:dark_oak_log')
 
+STONE = ('minecraft:stone', 'minecraft:andesite', 'minecraft:diorite', 'minecraft:netherrack')
 
 # Food Block groups
-NOFOOD = ('minecraft:sand', 'minecraft:dirt', 'minecraft:stone') + lookup.GLASS + lookup.AIR
+NOFOOD = ('minecraft:sand', 'minecraft:dirt', 'minecraft:water',) + STONE + lookup.GLASS + lookup.AIR
 LOWFOOD = ('minecraft:podzol',)
 MEDIUMFOOD = ('minecraft:grass_block',) + lookup.LEAVES + lookup.GRASSES + lookup.VINES
 HIGHFOOD = ('minecraft:mycelium',) + LOGS + lookup.FLOWERS + lookup.CROPS

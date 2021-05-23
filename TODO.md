@@ -49,6 +49,15 @@
     - If there is enough energy, and no new nodes are possible,
       try the most expensive upgrade possible
 
+  - Leg Growth:
+    Select random neighbor blocks of the leg, add their food to
+    the creature. Replace random blocks of the leg into their "next stage"
+    (create "next stage" function)
+    - If leg has no more food, start to transform it into soul sand and bone
+  - Node Growth: Expand the trunk to all sizes, and add more spires at random
+    location. Add lights and nether vines in random locations as necessary.
+
+
 
 ## Simple Player House
 
