@@ -87,11 +87,13 @@ if __name__ == "__main__":
 
     steps = set()
     for b in range(150):
-        steps = steps.union(aco.runIteration())
+        moresteps, food = aco.runIteration()
+        steps = steps.union(moresteps)
+        print(food)
         # for s in steps:
         #     iu.setBlock(*s,"minecraft:netherrack")
-        if (b%10 == 0):
-            print(b)
+        # if (b%10 == 0):
+        #     print(b)
         #     iu.sendBlocks()
 
     for s in steps:

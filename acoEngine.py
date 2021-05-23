@@ -109,4 +109,4 @@ class ACO:
                 _lp = (p[0] - self.rect[0], p[1], p[2] - self.rect[1])
                 newphero[_lp] += pheroadd
         self.phero = self.phero*PHEROMONEDECAY + newphero
-        return steps
+        return steps, totalfood
