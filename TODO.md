@@ -5,7 +5,7 @@
   - Medium food: Leaves, Grass = 30
   - Low food: Podzol, Mossy stones = 10
 
-- [ ] Select random central location with view from the sky
+- [X] Select random central location with view from the sky
 
 - [ ] Perform ACO from random location
   - Parameters:

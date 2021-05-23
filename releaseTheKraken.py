@@ -1,7 +1,12 @@
 import sys, time, argparse
+from random import randint
+
 import interfaceUtils as iu
+import lookup
 
 from foodtable import FoodTable
+import krakenUtils as utils
+
 
 minimum_side = 32
 
@@ -48,6 +53,27 @@ if __name__ == "__main__":
     iu.makeGlobalSlice()
     ws = iu.globalWorldSlice
     ft = FoodTable(ws)
+
+    # Select Kraken Location
+
+    location = [];
+    for _ in range(10):
+        _x, _z = randint(buildarea[0], buildarea[3]), randint(buildarea[2], buildarea[5])
+        _y = ws.heightmaps["MOTION_BLOCKING_NO_LEAVES"][_x - buildarea[0],_z - buildarea[2]]+1
+        while ws.getBlockAt(_x, _y, _z) in lookup.TRANSPARENT:
+            _y -= 1
+
+        _block = ws.getBlockAt(_x, _y, _z)
+        _food = ft.getFood(_x, _y, _z)
+
+        _score = _food + _y/20 + utils.mdist2d(_x, _z, *center)
+        location.append((-1*_score, (_x, _y, _z)))
+    location.sort()
+
+    location = location[0][1]
+
+    print("The Kraken has landed at {}.".format(location))
+
 
 
     endtime = time.time()

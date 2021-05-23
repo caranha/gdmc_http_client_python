@@ -35,7 +35,7 @@ class FoodTable:
     def __init__(self, worldslice):
         self.rect = worldslice.rect
         self.ws = worldslice
-        self.table = np.ones((self.rect[2], 255, self.rect[3]))*-1
+        self.table = np.ones((self.rect[2]+1, 255, self.rect[3]+1))*-1
 
     def g2l(self, x, y, z):
         return (x - self.rect[0], y, z-self.rect[1])
