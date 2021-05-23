@@ -1,6 +1,7 @@
-import sys
-import argparse
+import sys, time, argparse
 import interfaceUtils as iu
+
+from foodtable import FoodTable
 
 minimum_side = 32
 
@@ -36,5 +37,18 @@ def getBuildArea(args):
 
 if __name__ == "__main__":
     print("The Kraken has been released!")
+
+    starttime = time.time()
     buildarea = getBuildArea(args)
-    print(buildarea)
+    center = ((buildarea[0]+buildarea[3])//2,
+              (buildarea[2]+buildarea[5])//2)
+    print("BuildArea is {}, centered around {}.".format(buildarea,center))
+
+    # Creating world datafiles
+    iu.makeGlobalSlice()
+    ws = iu.globalWorldSlice
+    ft = FoodTable(ws)
+
+
+    endtime = time.time()
+    print("Total time was {:.2} seconds".format(endtime - starttime))
