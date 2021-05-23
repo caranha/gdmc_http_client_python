@@ -6,7 +6,7 @@ import lookup
 
 from foodtable import FoodTable
 import krakenUtils as utils
-import acoEngine
+import acoEngine, dfsEngine
 
 
 minimum_side = 32
@@ -83,18 +83,14 @@ if __name__ == "__main__":
         iu.setBlock(location[0],_y,location[2],"minecraft:glowstone")
     iu.sendBlocks()
 
-    aco = acoEngine.ACO(ws, ft, location)
-
     steps = set()
-    for b in range(150):
-        moresteps, food = aco.runIteration()
-        steps = steps.union(moresteps)
-        print(food)
-        # for s in steps:
-        #     iu.setBlock(*s,"minecraft:netherrack")
-        # if (b%10 == 0):
-        #     print(b)
-        #     iu.sendBlocks()
+
+    # aco = acoEngine.ACO(ws, ft, location)
+    dfs = dfsEngine.DFS(ws, ft, location)
+    for i in range(10):
+        food, s = dfs.runDFS(location)
+        steps = steps.union(s)
+
 
     for s in steps:
         iu.setBlock(*s, "minecraft:netherrack")

@@ -22,15 +22,33 @@
   - Pheromone return: Food found + (distance from center / maxsteps)
 
 ## Better search
-- [ ] Depth First Search
+- [X] Depth First Search
   - Starting from the "trunk", put nodes on priority queue (distance + food)
     - priority queue nodes are discarded if fully in air, or fully in stone
     - distance should have higher priority than food
     - there should be a little bit of randomness
   - After finishing the DFS, add food to food bank, and path to "roots"
     - union of roots makes "body"
-  - Next DFS begins from any node in the "trunk", weighted by distance
-    - after each iteration, "trunk" grows based on food
+
+## Action-Based Growth
+  - Consume: Transform energy into body mass, body mass is used for evolution
+             Amount of consumption depends on existing structures (legs, nodes)
+  - New Leg: Costs a lot of Energy, creates a new leg from a node using DFS
+  - Absorb: Costs little Energy, draws food from random block around the leg.
+            Leg grows thicker.
+  - Expand: Costs some energy, creates a lv 1 node in one of this node's legs.
+  - Upgrade: Costs some energy, upgrades a node,
+       A node lv n can support up to k_n nodes of level n-1
+       A node lv n costs n^2 x something energy
+
+  - Logic:
+    - If any node has no legs, create 5 legs from that node
+    - If energy is low, Absorb from a high energy leg, update leg energy
+    - If there is enough energy, and spare capacity, create a new node
+      on high energy leg.
+    - If there is enough energy, and no new nodes are possible,
+      try the most expensive upgrade possible
+
 
 ## Simple Player House
 
