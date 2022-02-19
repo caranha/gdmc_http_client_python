@@ -1,19 +1,18 @@
 # ! /usr/bin/python3
 """### Displays a map of the build area."""
 __all__ = ['WorldSlice']
-__version__ = 'v4.2_dev'
+__version__ = 'v5.0'
 
 import cv2
-import interfaceUtils
-import lookup
 import matplotlib.pyplot as plt
 import numpy as np
-from toolbox import loop2d
-from worldLoader import WorldSlice
+from gdpc import interface, lookup
+from gdpc.toolbox import loop2d
+from gdpc.worldLoader import WorldSlice
 
 if __name__ == '__main__':
     # see if a different build area was defined ingame
-    x1, _, z1, x2, _, z2 = interfaceUtils.requestBuildArea()
+    x1, _, z1, x2, _, z2 = interface.requestBuildArea()
 
     # load the world data and extract the heightmap(s)
     slice = WorldSlice(x1, z1, x2, z2)
@@ -63,7 +62,7 @@ if __name__ == '__main__':
     brightness = brightness.clip(-64, 64)
 
     topcolor += brightness
-    topcolor = topcolor.clip(0, 255)
+    topcolor = topcolor.clip(0, 256)
 
     # display the map
     topcolor = topcolor.astype('uint8')

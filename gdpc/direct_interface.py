@@ -2,16 +2,17 @@
 """### Provide access to the HTTP interface of the Minecraft HTTP server.
 
 This file contains various functions that map directly onto the HTTP interface.
+It is recommended to use `interface.py` instead.
 """
 __all__ = []
-__version__ = "v4.2_dev"
+__version__ = "v5.0"
 
 import requests
 from requests.exceptions import ConnectionError
 
 
 def getBlock(x, y, z):
-    """**Return the name of a block from the world**."""
+    """**Return the block ID from the world**."""
     url = f'http://localhost:9000/blocks?x={x}&y={y}&z={z}'
     try:
         response = requests.get(url).text
@@ -20,9 +21,15 @@ def getBlock(x, y, z):
     return response
 
 
-def setBlock(x, y, z, blockStr, flags='0100011'):
+def placeBlock(x, y, z, blockStr, doBlockUpdates=True, customFlags=None):
     """**Place one or multiple blocks in the world**."""
-    url = f'http://localhost:9000/blocks?x={x}&y={y}&z={z}&customFlags={flags}'
+    if customFlags is not None:
+        blockUpdateQueryParam = f"customFlags={customFlags}"
+    else:
+        blockUpdateQueryParam = f"doBlockUpdates={doBlockUpdates}"
+
+    url = (f'http://localhost:9000/blocks?x={x}&y={y}&z={z}'
+           f'&{blockUpdateQueryParam}')
     try:
         response = requests.put(url, blockStr)
     except ConnectionError:
@@ -30,11 +37,12 @@ def setBlock(x, y, z, blockStr, flags='0100011'):
     return response.text
 
 
-def sendBlocks(blockList, x=0, y=0, z=0, retries=5, flags='0100011'):
+def sendBlocks(blockList, x=0, y=0, z=0, retries=5,
+               doBlockUpdates=True, customFlags=None):
     """**Take a list of blocks and place them into the world in one go**."""
     body = str.join("\n", ['~{} ~{} ~{} {}'.format(*bp) for bp in blockList])
     try:
-        response = setBlock(x, y, z, body, flags)
+        response = placeBlock(x, y, z, body, doBlockUpdates, customFlags)
         return response
     except ConnectionError as e:
         print("Request failed: {} Retrying ({} left)".format(e, retries))

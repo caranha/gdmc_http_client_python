@@ -6,16 +6,17 @@ This module contains functions to:
 * Visualise numpy arrays
 """
 __all__ = ['WorldSlice']
-__version__ = 'v4.2_dev'
+__version__ = "v5.0"
 
 from io import BytesIO
 from math import ceil, log2
 
-import direct_interface as di
 import nbt
 import numpy as np
-from bitarray import BitArray
-from lookup import BIOMES
+
+from . import direct_interface as di
+from .bitarray import BitArray
+from .lookup import BIOMES
 
 
 class CachedSection:
@@ -39,7 +40,10 @@ class WorldSlice:
                                  "MOTION_BLOCKING_NO_LEAVES",
                                  "OCEAN_FLOOR",
                                  "WORLD_SURFACE"]):
-        """**Initialise WorldSlice with region and heightmaps**."""
+        """**Initialise WorldSlice with region and heightmaps**.
+
+        x2 and z2 are exclusive
+        """
         self.rect = x1, z1, x2 - x1, z2 - z1
         self.chunkRect = (self.rect[0] >> 4, self.rect[1] >> 4,
                           ((self.rect[0] + self.rect[2] - 1) >> 4)
